@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Homework-1</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+	<div class="main-content">
+		<header class="header">
+			<h1 class="header__title">TV shows APP</h1>
+		</header>
+		<section class="section card">
+			<img class="card__image" src="assets/cover.webp" alt="Arrow cover image" title="Arrow cover image" />
+			<div class="card__content">
+				<h2 class="card__title">Arrow</h2>
+				<p class="card__desc">Arrow is an American superhero television series developed by Greg Berlanti, Marc Guggenheim, and Andrew Kreisberg based on the DC Comics character Green Arrow, a costumed crime-fighter created by Mort Weisinger and George Papp, and is set in the Arrowverse, sharing continuity with other Arrowverse television series.</p>
+				<div class="card__rating">
+					<span class="js-rating-overview"></span> / 5
+			</div>
+		</section>
+
+		<form class="section form js-form">
+			<h1 class="form__title">TV shows APP</h1>
+			<textarea class="textarea js-form-text" placeholder="Add review"></textarea>
+			<input class="input js-form-value" type="number" step="1" min="0" max="5" placeholder="Add rating" />
+			<button class="button">Post</button>
+		</form>
+
+		<section class="section ratings js-ratings-list">
+			<template class="js-rating-template">
+				<div class="rating">
+					<div class="rating__content">
+						<p class="rating__desc js-rating-template-content"></p>
+						<span class="js-rating-template-value"></span> / 5
+					</div>
+					<button class="rating__button js-rating-template-delete">Delete</button>
+				</div>
+			</template>
+		</section>
+	</div>
+
+	<script type="module" src="index.js"></script>
+</body>
+</html>
