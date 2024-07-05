@@ -115,10 +115,11 @@ function calcOverview() {
  * Get the review item from template.
  *
  * @param {object} review The review object.
+ * @param {array} reviews The reviews array.
  *
  * @returns {Node} The review item.
  */
-function getReviewItem(review) {
+function getReviewItem(review, reviews) {
 	const { rating, content } = review;
 
 	if (!rating || !content) {
@@ -138,7 +139,7 @@ function getReviewItem(review) {
 
 	ratingItemButton.onclick = () => {
 		reRenderReviews(
-			getLocalStorage(storageName).filter((t) => JSON.stringify(t) !== JSON.stringify(review))
+			reviews.filter((t) => t !== review)
 		)
 	};
 
@@ -153,8 +154,10 @@ function getReviewItem(review) {
 function renderReviews() {
 	reviewsList.innerHTML = '';
 
-	getLocalStorage(storageName).forEach((review) => {
-		const item = getReviewItem(review);
+	const reviews = getLocalStorage(storageName);
+
+	reviews.forEach((review) => {
+		const item = getReviewItem(review, reviews);
 		reviewsList.prepend(item);
 	});
 }
