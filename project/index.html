@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Homework-1</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+	<div class="main-content">
+		<header class="header">
+			<h1 class="header__title">TV shows APP</h1>
+		</header>
+		<section class="section card">
+			<img class="card__image" src="assets/cover.webp" alt="Arrow cover image" title="Arrow cover image" />
+			<div class="card__content">
+				<h2 class="card__title">Arrow</h2>
+				<p class="card__desc">Arrow is an American superhero television series developed by Greg Berlanti, Marc Guggenheim, and Andrew Kreisberg based on the DC Comics character Green Arrow, a costumed crime-fighter created by Mort Weisinger and George Papp, and is set in the Arrowverse, sharing continuity with other Arrowverse television series.</p>
+				<div class="card__rating">
+					<span class="card__rating rating-stars js-rating-overview-rating" data-rating="">
+						<span class="fa fa-star" data-rate="1"></span>
+						<span class="fa fa-star" data-rate="2"></span>
+						<span class="fa fa-star" data-rate="3"></span>
+						<span class="fa fa-star" data-rate="4"></span>
+						<span class="fa fa-star" data-rate="5"></span>
+					</span>
+					<span class="js-rating-overview-value"></span> / 5
+			</div>
+		</section>
+
+		<form class="section form js-form">
+			<h2 class="form__title">Write your review</h2>
+			<textarea class="textarea js-form-text" placeholder="Add your review" required></textarea>
+
+			<div class="form__rating rating-stars js-form-rating" data-rating="3">
+				<span class="fa fa-star js-form-rating-item" data-rate="1"></span>
+				<span class="fa fa-star js-form-rating-item" data-rate="2"></span>
+				<span class="fa fa-star js-form-rating-item" data-rate="3"></span>
+				<span class="fa fa-star js-form-rating-item" data-rate="4"></span>
+				<span class="fa fa-star js-form-rating-item" data-rate="5"></span>
+			</div>
+			<button class="button">Post</button>
+		</form>
+
+		<section class="section ratings">
+			<h3 class="form__title">Reviews</h3>
+			<div class="ratings-list js-ratings-list">
+			</div>
+		</section>
+	</div>
+
+	<template class="js-rating-template">
+		<div class="rating">
+			<div class="rating__content">
+				<p class="rating__desc js-rating-template-content"></p>
+				<span class="rating__rating rating-stars js-rating-template-rating" data-rating="">
+					<span class="fa fa-star" data-rate="1"></span>
+					<span class="fa fa-star" data-rate="2"></span>
+					<span class="fa fa-star" data-rate="3"></span>
+					<span class="fa fa-star" data-rate="4"></span>
+					<span class="fa fa-star" data-rate="5"></span>
+				</span>
+				<span class="js-rating-template-value"></span> / 5
+			</div>
+			<button class="rating__button js-rating-template-delete">Delete</button>
+		</div>
+	</template>
+
+	<script type="module" src="index.js"></script>
+</body>
+</html>
