@@ -1,7 +1,12 @@
 .main {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 6rem;
-	min-height: 100vh;
+	display: grid;
+	padding: 30px;
+	gap: 20px;
+	margin: 20px auto;
+}
+
+@media (min-width: 992px) {
+	.main {
+		max-width: 80%;
+	}
 }
