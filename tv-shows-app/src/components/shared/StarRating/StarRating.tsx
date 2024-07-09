@@ -1,38 +1,42 @@
+'use client';
+
 import React, { useState } from "react";
-import { FaStar } from "react-icons/fa";
-import { Radio, HStack, Box } from "@chakra-ui/react";
+import { StarIcon } from "@chakra-ui/icons";
+import { Radio, HStack, Hide, Box } from "@chakra-ui/react";
 
-export default function StarRating({ rating, setRating, count, size }) {
-  // count:  number of stars you want, pass as props
-  //size: size of star that you want
+interface IStarRatingProps {
+	rating: number;
+	setRating: (rating: number) => void;
+	count?: number;
+	size?: number;
+}
 
-  const [hover, setHover] = useState(null);
-  return (
-    <HStack spacing={"2px"}>
-      {[...Array(count || 5)].map((star, index) => {
-        const ratingValue = index + 1;
-        return (
-          <Box
-            as="label"
-            key={index}
-            color={ratingValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
-            onMouseEnter={() => setHover(ratingValue)}
-            onMouseLeave={() => setHover(null)}
-          >
-            <Radio
-              name="rating"
-              onChange={() => setRating(ratingValue)}
-              value={ratingValue}
-              d="none"
-            ></Radio>
-            <FaStar
-              cursor={"pointer"}
-              size={size || 20}
-              transition="color 200ms"
-            />
-          </Box>
-        );
-      })}
-    </HStack>
-  );
+export const StarRating = ({ rating, setRating, count, size }: IStarRatingProps) => {
+	const [hover, setHover] = useState(null);
+
+	const isSetRating = typeof setRating !== 'undefined';
+
+	return (
+		<HStack spacing={2}>
+			{[...Array(count || 5)].map((star, index) => {
+				const ratingValue = index + 1;
+
+				return (
+					<Box
+						key={index}
+						color={(ratingValue <= (isSetRating ? hover || rating : rating)) ? "#ffc107" : "#e4e5e9"}
+						onMouseEnter={() => setHover(ratingValue)}
+						onMouseLeave={() => setHover(null)}
+					>
+						<StarIcon
+							cursor={isSetRating && "pointer"}
+							size={size || 20}
+							transition="color 200ms"
+							onClick={() => setRating(ratingValue)}
+						/>
+					</Box>
+				);
+			})}
+		</HStack>
+	);
 }
