@@ -1,4 +1,4 @@
-import { StarRating } from "@/components/shared/StarRating/StarRating";
+import { StarRatingInput } from "@/components/shared/StarRatingInput/StarRatingInput";
 import { IReview } from "@/typings/Reviews.type";
 import { Button, Flex, FormControl, FormErrorMessage, Heading, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
@@ -16,7 +16,8 @@ export const ReviewsForm = ({onAdd}: IReviewsFormProps) => {
 	const [validation, setValidation] = useState(validationInitialState);
 	const [ratingValue, setRatingValue] = useState(0);
 
-	const onClickHandler = () => {
+	const onSubmitHandler = (e) => {
+		e.preventDefault();
 		const comment = document.getElementById('js-comment') as HTMLInputElement;
 
 		const newValidation = {}
@@ -50,16 +51,18 @@ export const ReviewsForm = ({onAdd}: IReviewsFormProps) => {
 
 	return (
 		<Flex
+			as='form'
 			gap={4}
 			flexDirection='column'
 			border='1px'
 			borderColor='purple.600'
-			bgColor={'purple.800'}
+			bgColor='purple.800'
 			p={5}
 			borderRadius={10}
+			onSubmit={onSubmitHandler}
 		>
 			<Heading
-				as={'h3'}
+				as='h3'
 				size='md'
 			>
 				Rate your show:
@@ -83,9 +86,9 @@ export const ReviewsForm = ({onAdd}: IReviewsFormProps) => {
 					gap={2}
 					alignItems='center'
 				>
-					<StarRating
-						rating={ratingValue}
-						setRating={setRatingValue}
+					<StarRatingInput
+						value={ratingValue}
+						onChange={setRatingValue}
 					/>
 					<Text
 						fontSize='sm'
@@ -98,8 +101,8 @@ export const ReviewsForm = ({onAdd}: IReviewsFormProps) => {
 			</FormControl>
 
 			<Button
+				type="submit"
 				colorScheme='pink'
-				onClick={onClickHandler}
 			>
 				Add
 			</Button>

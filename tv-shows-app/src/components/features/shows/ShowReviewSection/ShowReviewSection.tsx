@@ -6,6 +6,7 @@ import { ReviewsForm } from "../ReviewForm/ReviewForm";
 import { IReview } from "@/typings/Reviews.type";
 import { useEffect, useState } from "react";
 import { ShowDetails } from "../ShowDetails/ShowDetails";
+import { set } from "ol/transform";
 
 const mockReviewsList = {
 	reviews: [
@@ -20,15 +21,16 @@ const mockReviewsList = {
 	],
 };
 
-const mockShow = {
+const mockShowDetails = {
 	title: 'Arrow',
 	imageUrl: 'https://static.wikia.nocookie.net/arrow/images/1/1e/Arrow_Season_8_Poster.jpg',
 	description: 'Arrow is an American superhero television series developed by Greg Berlanti, Marc Guggenheim, and Andrew Kreisberg based on the DC Comics character Green Arrow, a costumed crime-fighter created by Mort Weisinger and George Papp, and is set in the Arrowverse, sharing continuity with other Arrowverse television series.',
+	averageRating: 0,
 };
 
 export const ShowReviewSection = () => {
 	const [reviewsList, setReviewsList] = useState(mockReviewsList);
-	const [averageRating, setAverageRating] = useState(0);
+	const [showDetails, setShowDetails] = useState(mockShowDetails);
 
 	useEffect(() => {
 		const loadedList = loadFromLocalStorage();
@@ -37,13 +39,11 @@ export const ShowReviewSection = () => {
 	}, []);
 
 	useEffect(() => {
+		calculateAverageRating();
+
 		if (reviewsList !== mockReviewsList) {
 			saveToLocalStorage();
 		}
-	}, [reviewsList]);
-
-	useEffect(() => {
-		calculateAverageRating()
 	}, [reviewsList]);
 
 	const saveToLocalStorage = () => {
@@ -85,7 +85,10 @@ export const ShowReviewSection = () => {
 			return totalRating += review.rating;
 		});
 
-		setAverageRating((reviewsList.reviews.length > 0) ? Math.round((totalRating / reviewsList.reviews.length) * 100) / 100 : 0);
+		setShowDetails({
+			...showDetails,
+			averageRating: (reviewsList.reviews.length > 0) ? Math.round((totalRating / reviewsList.reviews.length) * 100) / 100 : 0,
+		});
 	}
 
 	return (
@@ -95,12 +98,7 @@ export const ShowReviewSection = () => {
 			pb={4}
 		>
 			<ShowDetails
-				show={
-					{
-						...mockShow,
-						averageRating: averageRating,
-					}
-				}
+				show={showDetails}
 			/>
 
 			<ReviewsForm onAdd={onAddShowReview} />

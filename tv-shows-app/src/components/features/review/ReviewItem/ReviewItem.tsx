@@ -1,6 +1,6 @@
 'use client';
 
-import { StarRating } from "@/components/shared/StarRating/StarRating";
+import { StarRatingInput } from "@/components/shared/StarRatingInput/StarRatingInput";
 import { IReview } from "@/typings/Reviews.type";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Flex, IconButton, Text } from "@chakra-ui/react";
@@ -34,7 +34,9 @@ export const ReviewItem = ({ review, onReviewDelete }: IReviewItemProps) => {
 					gap={2}
 					alignItems='center'
 				>
-					<StarRating rating={review.rating} />
+					<StarRatingInput
+						value={review.rating}
+					/>
 					<Text
 						fontSize='sm'
 						fontWeight='bold'

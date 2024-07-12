@@ -1,6 +1,6 @@
 'use client';
 
-import { StarRating } from "@/components/shared/StarRating/StarRating";
+import { StarRatingInput } from "@/components/shared/StarRatingInput/StarRatingInput";
 import { IShow } from "@/typings/Show.type";
 import { Card, CardBody, Flex, Heading, Image, Text } from "@chakra-ui/react";
 
@@ -42,7 +42,9 @@ export const ShowDetails = ({ show }: IShowDetailsProps) => {
 					{
 						show.averageRating ?
 						<>
-							<StarRating rating={show.averageRating} />
+							<StarRatingInput
+								value={show.averageRating}
+							/>
 							<Text
 								fontSize='sm'
 								fontWeight='bold'
