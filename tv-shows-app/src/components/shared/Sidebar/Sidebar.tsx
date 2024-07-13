@@ -11,6 +11,7 @@ const sidebarMock = [
 	{ name: 'All shows', url: '/shows' },
 	{ name: 'Top rated', url: '/top-rated' },
 	{ name: 'My profile', url: '/profile' },
+	{ name: 'Logout', url: '/?login=true' },
 ];
 
 export const Sidebar = ({ items }: ISidebarProps) => {

@@ -15,7 +15,7 @@ interface IAuthRedirectProps {
 export const AuthRedirect = ({to, condition}: IAuthRedirectProps) => {
 	const router = useRouter();
 	const {data, isLoading} = useUser();
-	const searchParams = useSearchParams();g
+	const searchParams = useSearchParams();
 
 	useEffect(() => {
 		if (isLoading) {

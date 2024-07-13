@@ -20,7 +20,6 @@ export async function fetcherSecure<T>(input: string | URL | globalThis.Request,
 			'access-token': auth.accessToken,
 		};
 	}
-	
 
 	const response = await fetch(input, {
 		...init,
