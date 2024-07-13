@@ -5,7 +5,7 @@ import { ReviewsList } from "../../review/ReviewsList/ReviewsList"
 import { ReviewsForm } from "../ReviewForm/ReviewForm";
 import { IReview } from "@/typings/Reviews.type";
 import { useEffect, useState } from "react";
-import { ShowDetails } from "../ShowDetails/ShowDetails";
+import { ShowCard } from "../ShowCard/ShowCard";
 import { set } from "ol/transform";
 
 const mockReviewsList = {
@@ -21,7 +21,7 @@ const mockReviewsList = {
 	],
 };
 
-const mockShowDetails = {
+const mockShowCard = {
 	title: 'Arrow',
 	imageUrl: 'https://static.wikia.nocookie.net/arrow/images/1/1e/Arrow_Season_8_Poster.jpg',
 	description: 'Arrow is an American superhero television series developed by Greg Berlanti, Marc Guggenheim, and Andrew Kreisberg based on the DC Comics character Green Arrow, a costumed crime-fighter created by Mort Weisinger and George Papp, and is set in the Arrowverse, sharing continuity with other Arrowverse television series.',
@@ -30,7 +30,7 @@ const mockShowDetails = {
 
 export const ShowReviewSection = () => {
 	const [reviewsList, setReviewsList] = useState(mockReviewsList);
-	const [showDetails, setShowDetails] = useState(mockShowDetails);
+	const [showCard, setShowCard] = useState(mockShowCard);
 
 	useEffect(() => {
 		const loadedList = loadFromLocalStorage();
@@ -85,8 +85,8 @@ export const ShowReviewSection = () => {
 			return totalRating += review.rating;
 		});
 
-		setShowDetails({
-			...showDetails,
+		setShowCard({
+			...showCard,
 			averageRating: (reviewsList.reviews.length > 0) ? Math.round((totalRating / reviewsList.reviews.length) * 100) / 100 : 0,
 		});
 	}
@@ -97,9 +97,7 @@ export const ShowReviewSection = () => {
 			gap={4}
 			pb={4}
 		>
-			<ShowDetails
-				show={showDetails}
-			/>
+			<ShowCard show={showCard} />
 
 			<ReviewsForm onAdd={onAddShowReview} />
 

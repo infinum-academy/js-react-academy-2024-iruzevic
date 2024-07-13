@@ -1,7 +1,8 @@
 'use client'
 
-import { ShowReviewSection } from "@/components/features/shows/ShowReviewSection/ShowReviewSection";
+import { AuthRedirect } from "@/components/shared/AuthRedirect/AuthRedirect";
 
 export default function Home() {
-	return <ShowReviewSection />;
+	return <AuthRedirect to='/login' condition="isLoggedOut" />;
 }
+

@@ -4,11 +4,11 @@ import { StarRatingInput } from "@/components/shared/StarRatingInput/StarRatingI
 import { IShow } from "@/typings/Show.type";
 import { Card, CardBody, Flex, Heading, Image, Text } from "@chakra-ui/react";
 
-interface IShowDetailsProps {
+interface IShowCardProps {
 	show: IShow;
 }
 
-export const ShowDetails = ({ show }: IShowDetailsProps) => {
+export const ShowCard = ({ show }: IShowCardProps) => {
 	return (
 		<Card
 			mb={4}

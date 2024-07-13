@@ -1,0 +1,6 @@
+.body {
+	background-color: var(--chakra-colors-purple-900);
+	color: var(--chakra-colors-white);
+	min-height: 100vh;
+	height: 100%;
+}
