@@ -4,7 +4,7 @@ import { Flex, Text } from "@chakra-ui/react"
 import { ReviewsList } from "../../review/ReviewsList/ReviewsList"
 import { ReviewsForm } from "../ReviewForm/ReviewForm";
 import { IReview } from "@/typings/Reviews.type";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ShowCard } from "../ShowCard/ShowCard";
 import useSWR from "swr";
 import { swrKeys } from "@/fetchers/swrKeys";
@@ -17,6 +17,7 @@ export const ShowReviewSection = ({showId}) => {
 	const [showCard, setShowCard] = useState({});
 
 	const {
+		data: showData,
 		isLoading: isLoadingShow
 	} = useSWR(`${swrKeys.showsList}/${showId}`, fetcherSecure, {
 		onSuccess: (data) => {

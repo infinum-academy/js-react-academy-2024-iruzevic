@@ -7,35 +7,37 @@ import { useSearchParams, usePathname } from "next/navigation";
 import { Loader } from "../Loader/Loader";
 
 export const AuthRedirect = ({children}) => {
-	const loggedInTo = '/all-shows';
-	const loggedOutTo = '/login';
+	const loggedInPath = '/all-shows';
+	const loggedOutPath = '/login';
 
-	const router = useRouter();
 	const {data, isLoading} = useUser();
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
+	const logoutParam = searchParams.get('logout');
+	const router = useRouter();
 
 	if (isLoading) {
 		return <Loader />;
 	}
 
-	// const logout = searchParams.get('logout');
-
-	// if (logout === 'true') {
-	// 	localStorage.removeItem('authToken');
-	// 	router.push(loggedOutTo);
-	// }
-
 	const user = processRequest(data);
 
-	if (user.status === 'error') {
-		router.push(loggedOutTo);
+	if (user.status === 'error' && !['/login', '/register'].includes(pathname)) {
+		router.push(loggedOutPath);
 		return;
 	}
 
-	if (user.status === 'success' && ['/login', '/register', '/'].includes(pathname)) {
-		router.push(loggedInTo);
-		return;
+	if (user.status === 'success') {
+		if (logoutParam === 'true') {
+			localStorage.removeItem('authToken');
+			router.push('/');
+			return;
+		}
+
+		if (['/login', '/register', '/'].includes(pathname)) {
+			router.push(loggedInPath);
+			return;
+		}
 	}
 
 	return children;
