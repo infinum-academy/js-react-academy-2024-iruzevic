@@ -33,6 +33,12 @@ export const RegisterForm = () => {
 
 	const onRegister = async(data: IRegisterFormInputs) => {
 		setGlobalError([]);
+
+		if (data.password !== data.password_confirmation) {
+			setGlobalError(['Passwords do not match']);
+			return;
+		}
+		
 		await trigger(data);
 	}
 

@@ -6,4 +6,5 @@ export const swrKeys = {
 	profile: `${apiURL}/users/me`,
 	showsList: `${apiURL}/shows`,
 	showsTopRatedList: `${apiURL}/shows/top_rated`,
+	reviews: `${apiURL}/reviews`,
 }

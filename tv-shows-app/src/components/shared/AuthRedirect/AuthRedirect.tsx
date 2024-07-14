@@ -2,51 +2,41 @@
 
 import { processRequest } from "@/fetchers/processor";
 import { useUser } from "@/hooks/useUser";
-import { Flex, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, usePathname } from "next/navigation";
+import { Loader } from "../Loader/Loader";
 
-interface IAuthRedirectProps {
-	to: string;
-	condition: 'isLoggedIn' | 'isLoggedOut';
-}
+export const AuthRedirect = ({children}) => {
+	const loggedInTo = '/all-shows';
+	const loggedOutTo = '/login';
 
-export const AuthRedirect = ({to, condition}: IAuthRedirectProps) => {
 	const router = useRouter();
 	const {data, isLoading} = useUser();
 	const searchParams = useSearchParams();
-
-	useEffect(() => {
-		if (isLoading) {
-			return;
-		}
-
-		const logout = searchParams.get('logout');
-
-		if (logout === 'true') {
-			localStorage.removeItem('authToken');
-			router.push('/');
-		}
-
-		const user = processRequest(data);
-
-		if (user.status === 'error' && condition === 'isLoggedOut') {
-			router.push('/login');
-		}
-
-		if (user.status === 'success' && condition === 'isLoggedIn') {
-			router.push(to);
-		}
-	}, [data, condition, router, to, isLoading]);
+	const pathname = usePathname();
 
 	if (isLoading) {
-		return (
-			<Flex justifyContent='center' alignItems='center' h='100vh'>
-				<Spinner color='red.500' size='xl' />
-			</Flex>
-		)
+		return <Loader />;
 	}
 
-	return;
+	// const logout = searchParams.get('logout');
+
+	// if (logout === 'true') {
+	// 	localStorage.removeItem('authToken');
+	// 	router.push(loggedOutTo);
+	// }
+
+	const user = processRequest(data);
+
+	if (user.status === 'error') {
+		router.push(loggedOutTo);
+		return;
+	}
+
+	if (user.status === 'success' && ['/login', '/register', '/'].includes(pathname)) {
+		router.push(loggedInTo);
+		return;
+	}
+
+	return children;
 }

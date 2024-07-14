@@ -1,9 +1,11 @@
 'use client';
 
 import { StarRatingInput } from "@/components/shared/StarRatingInput/StarRatingInput";
+import { getCurrentUserEmail } from "@/fetchers/auth";
 import { IReview } from "@/typings/Reviews.type";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Flex, IconButton, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 interface IReviewItemProps {
 	rating: IReview;
@@ -11,6 +13,14 @@ interface IReviewItemProps {
 }
 
 export const ReviewItem = ({ review, onReviewDelete }: IReviewItemProps) => {
+	const [canDelete, setCanDelete] = useState(false);
+
+	useEffect(() => {
+		if (review.user.email === getCurrentUserEmail()) {
+			setCanDelete(true);
+		}
+	}, [review]);
+
 	const onDeleteHandler = () => {
 		onReviewDelete(review);
 	};
@@ -46,12 +56,14 @@ export const ReviewItem = ({ review, onReviewDelete }: IReviewItemProps) => {
 				</Flex>
 			</Flex>
 
-			<IconButton
-				onClick={onDeleteHandler}
-				colorScheme="red"
-				aria-label="Delete review"
-				icon={<DeleteIcon />}
-			/>
+			{canDelete &&
+				<IconButton
+					onClick={onDeleteHandler}
+					colorScheme="red"
+					aria-label="Delete review"
+					icon={<DeleteIcon />}
+				/>
+			}
 		</Flex>
 	);
 }

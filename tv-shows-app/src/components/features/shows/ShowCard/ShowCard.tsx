@@ -9,16 +9,23 @@ interface IShowCardProps {
 }
 
 export const ShowCard = ({ show }: IShowCardProps) => {
+	const link = show.link ? {
+		href: show.link,
+		as: 'a',
+	} : {};
+
 	return (
 		<Card
 			mb={4}
 			borderRadius={10}
+			overflow='hidden'
+			{...link}
 		>
 			<Image
-				borderRadius={10}
 				objectFit='cover'
 				src={show.imageUrl}
-				alt='Chakra UI'
+				alt={show.title}
+				maxH="300px"
 			/>
 			<CardBody
 				py={10}

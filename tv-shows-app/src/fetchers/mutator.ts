@@ -1,16 +1,22 @@
+
+import { getAuthData } from "./auth";
 import { processRequest } from "./processor";
 
-export async function mutatorRaw(url: string, arg: {arg: any}) {
-	const response = await fetch(url, {
-		method: 'POST',
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(arg),
-	});
+export async function mutatorRaw<T>(input: string | URL | globalThis.Request, init?: RequestInit): Promise<T> {
+	const defaultHeaders = {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json',
+	};
 
-	return response;
+	return await fetch(input, {
+		...init,
+		method: init?.method || 'POST',
+		headers: {
+			...defaultHeaders,
+			...init?.headers,
+		},
+		body: JSON.stringify(init.body),
+	});
 }
 
 export async function mutator(url: string, { arg }: {arg: any}) {
@@ -20,7 +26,9 @@ export async function mutator(url: string, { arg }: {arg: any}) {
 }
 
 export async function mutatorLogin(url: string, { arg }: {arg: any}) {
-	const response = await mutatorRaw(url, arg);
+	const response = await mutatorRaw(url, {
+		body: arg,
+	});
 
 	const responseData = await response.json();
 
@@ -40,17 +48,23 @@ export async function mutatorLogin(url: string, { arg }: {arg: any}) {
 }
 
 export async function mutatorSecure(url: string, { arg }: {arg: any}) {
-	const authData = localStorage.getItem('authToken');
-
 	const response = await mutatorRaw(url, {
-		...arg,
-		headers: {
-			...arg.headers,
-			uid: authData.uid,
-			client: authData.client,
-			'access-token': authData.accessToken
-		},
+		headers: getAuthData(),
+		body: arg,
 	});
 
 	return response.json();
+}
+
+export async function mutatorDeleteSecure(url: string) {
+	const response = await mutatorRaw(url, {
+		method: 'DELETE',
+		headers: getAuthData(),
+	});
+
+	if (response.ok) {
+		return true;
+	}
+
+	return false;
 }

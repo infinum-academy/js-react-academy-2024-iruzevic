@@ -8,10 +8,10 @@ interface ISidebarProps {
 }
 
 const sidebarMock = [
-	{ name: 'All shows', url: '/shows' },
+	{ name: 'All shows', url: '/all-shows' },
 	{ name: 'Top rated', url: '/top-rated' },
 	{ name: 'My profile', url: '/profile' },
-	{ name: 'Logout', url: '/?login=true' },
+	{ name: 'Logout', url: '/?logout=true' },
 ];
 
 export const Sidebar = ({ items }: ISidebarProps) => {
@@ -28,7 +28,10 @@ export const Sidebar = ({ items }: ISidebarProps) => {
 				My TV Shows
 			</Heading>
 
-			<UnorderedList>
+			<UnorderedList
+				listStyleType="none"
+				fontSize={18}
+			>
 				{sidebarItems.map((item) => (
 					<ListItem  key={item.url}>
 						<Link as={NexLink} href={item.url}>{item.name}</Link>

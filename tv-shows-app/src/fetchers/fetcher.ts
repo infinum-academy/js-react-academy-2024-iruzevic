@@ -1,33 +1,14 @@
-export async function fetcher<T>(input: string | URL | globalThis.Request, init?: RequestInit): Promise<T> {
-	const response = await fetch(input, {
-		...init,
-	});
+import { getAuthData } from "./auth";
 
-	return response;
+export async function fetcherRaw<T>(input: string | URL | globalThis.Request, init?: RequestInit): Promise<T> {
+	return await fetch(input, init);
 }
 
-export async function fetcherSecure<T>(input: string | URL | globalThis.Request, init?: RequestInit): Promise<T> {
-	const authData = localStorage.getItem('authToken');
-
-	let authHeaders = {};
-
-	if (authData) {
-		const auth = JSON.parse(authData);
-
-		authHeaders = {
-			uid: auth.uid,
-			client: auth.client,
-			'access-token': auth.accessToken,
-		};
-	}
-
-	const response = await fetch(input, {
-		...init,
-		headers: {
-			...init?.headers,
-			...authHeaders,
-		}
+export async function fetcherSecure(input: string) {
+	const response = await fetcherRaw(input, {
+		headers: getAuthData(),
 	});
 
 	return response.json();
 }
+ 

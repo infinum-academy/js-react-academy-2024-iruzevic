@@ -7,8 +7,7 @@ export default function AuthLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<>
-			<AuthRedirect to='/' condition="isLoggedIn" />
+		<AuthRedirect>
 			<Flex
 				direction="column"
 				p={4}
@@ -23,6 +22,6 @@ export default function AuthLayout({
 					{children}
 				</Container>
 			</Flex>
-		</>
+		</AuthRedirect>
 	);
 }

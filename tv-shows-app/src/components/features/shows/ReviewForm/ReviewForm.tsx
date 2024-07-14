@@ -1,4 +1,5 @@
 import { StarRatingInput } from "@/components/shared/StarRatingInput/StarRatingInput";
+import { getCurrentUserEmail } from "@/fetchers/auth";
 import { IReview } from "@/typings/Reviews.type";
 import { Button, Flex, FormControl, FormErrorMessage, Heading, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
@@ -40,6 +41,9 @@ export const ReviewsForm = ({onAdd}: IReviewsFormProps) => {
 		const newReview: IReview = {
 			comment: comment.value,
 			rating: ratingValue,
+			user: {
+				email: getCurrentUserEmail(),
+			}
 		};
 
 		onAdd(newReview);

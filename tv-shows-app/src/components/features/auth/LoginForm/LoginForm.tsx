@@ -7,7 +7,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useSWRMutation from "swr/mutation";
 import NexLink from "next/link";
-import { processRequest } from "@/fetchers/processor";
 import { swrKeys } from "@/fetchers/swrKeys";
 
 interface ILoginFormInputs {
