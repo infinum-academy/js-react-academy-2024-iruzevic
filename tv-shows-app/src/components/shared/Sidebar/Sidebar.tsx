@@ -3,10 +3,6 @@
 import { Flex, Heading, Link, ListItem, UnorderedList } from "@chakra-ui/react";
 import NexLink from "next/link";
 
-interface ISidebarProps {
-	items;
-}
-
 const sidebarMock = [
 	{ name: 'All shows', url: '/all-shows' },
 	{ name: 'Top rated', url: '/top-rated' },
@@ -14,8 +10,8 @@ const sidebarMock = [
 	{ name: 'Logout', url: '/login?logout=true' },
 ];
 
-export const Sidebar = ({ items }: ISidebarProps) => {
-	const sidebarItems = items || sidebarMock;
+export const Sidebar = () => {
+	const sidebarItems = sidebarMock;
 	return (
 		<Flex
 			direction="column"

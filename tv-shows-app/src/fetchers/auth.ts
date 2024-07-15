@@ -1,4 +1,10 @@
-export const getAuthData = () => {
+interface IAuthData {
+	uid?: string;
+	client?: string;
+	'access-token'?: string;
+}
+
+export const getAuthData = (): IAuthData => {
 	const authData = localStorage.getItem('authToken');
 
 	if (!authData) {
@@ -14,7 +20,7 @@ export const getAuthData = () => {
 	}
 }
 
-export const getCurrentUserEmail = () => {
+export const getCurrentUserEmail = (): string => {
 	const authData = localStorage.getItem('authToken');
 
 	if (!authData) {

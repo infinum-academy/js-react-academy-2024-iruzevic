@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { StarIcon } from "@chakra-ui/icons";
-import { Radio, HStack, Hide, Box } from "@chakra-ui/react";
+import { HStack, Box } from "@chakra-ui/react";
 
 interface IStarRatingInputProps {
 	value: number;
@@ -26,7 +26,7 @@ export const StarRatingInput = ({ value, onChange }: IStarRatingInputProps) => {
 
 				return (
 					<Box
-						as={hasOnChange && 'button'}
+						as={hasOnChange ? 'button' : 'div'}
 
 						key={index}
 						color={(inputValue <= (hasOnChange ? hover || value : value)) ? "orange.300" : "gray.300"}
@@ -37,8 +37,8 @@ export const StarRatingInput = ({ value, onChange }: IStarRatingInputProps) => {
 						}}
 					>
 						<StarIcon
-							cursor={hasOnChange && "pointer"}
-							size={20}
+							cursor={hasOnChange ? "pointer" : 'default'}
+							boxSize={5}
 							transition="color 200ms"
 						/>
 					</Box>

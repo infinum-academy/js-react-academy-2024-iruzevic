@@ -2,7 +2,7 @@
 import { getAuthData } from "./auth";
 import { processRequest } from "./processor";
 
-export async function mutatorRaw<T>(input: string | URL | globalThis.Request, init?: RequestInit): Promise<T> {
+export async function mutatorRaw(input: string | URL | globalThis.Request, init?: RequestInit) {
 	const defaultHeaders = {
 		'Accept': 'application/json',
 		'Content-Type': 'application/json',
@@ -19,13 +19,13 @@ export async function mutatorRaw<T>(input: string | URL | globalThis.Request, in
 	});
 }
 
-export async function mutator(url: string, { arg }: {arg: any}) {
+export async function mutator<T>(url: string, { arg }: { arg: any }): Promise<T> {
 	const response = await mutatorRaw(url, arg);
 
 	return response.json();
 }
 
-export async function mutatorLogin(url: string, { arg }: {arg: any}) {
+export async function mutatorLogin(url: string, { arg }: { arg: any }) {
 	const response = await mutatorRaw(url, {
 		body: arg,
 	});
@@ -47,7 +47,7 @@ export async function mutatorLogin(url: string, { arg }: {arg: any}) {
 	return data;
 }
 
-export async function mutatorSecure(url: string, { arg }: {arg: any}) {
+export async function mutatorSecure(url: string, { arg }: { arg: any }) {
 	const response = await mutatorRaw(url, {
 		headers: getAuthData(),
 		body: arg,
@@ -56,7 +56,7 @@ export async function mutatorSecure(url: string, { arg }: {arg: any}) {
 	return response.json();
 }
 
-export async function mutatorDeleteSecure(url: string) {
+export async function mutatorDeleteSecure(url: string): boolean {
 	const response = await mutatorRaw(url, {
 		method: 'DELETE',
 		headers: getAuthData(),

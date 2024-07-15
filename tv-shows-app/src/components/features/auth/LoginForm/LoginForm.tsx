@@ -68,7 +68,7 @@ export const LoginForm = () => {
 
 			<FormControl isRequired={true}>
 				<FormLabel>Email</FormLabel>
-				<Input {...register("email")} required type="email" />
+				<Input {...register("email", )} required type="email" />
 			</FormControl>
 
 			<FormControl isRequired={true}>

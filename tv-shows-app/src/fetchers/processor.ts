@@ -3,7 +3,7 @@ interface IProcessRequest {
 	data: Object;
 }
 
-export function processRequest<IProcessRequest>(args: Object) {
+export function processRequest(args: Object): IProcessRequest {
 	if ('errors' in args) {
 		return {
 			status: 'error',

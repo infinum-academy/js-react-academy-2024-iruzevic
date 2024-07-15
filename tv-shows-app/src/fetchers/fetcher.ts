@@ -1,7 +1,7 @@
 import { getAuthData } from "./auth";
 
-export async function fetcherRaw<T>(input: string | URL | globalThis.Request, init?: RequestInit): Promise<T> {
-	return await fetch(input, init);
+export function fetcherRaw(input: string | URL | globalThis.Request, init?: RequestInit) {
+	return fetch(input, init);
 }
 
 export async function fetcherSecure(input: string) {
@@ -11,4 +11,19 @@ export async function fetcherSecure(input: string) {
 
 	return response.json();
 }
- 
+
+export async function fetcher<T>(input: string | URL | globalThis.Request, init?: RequestInit): Promise<T> {
+	try {
+		const response = await fetch(input, {
+			credentials: 'include',
+			...init,
+		});
+		if (!response.ok) {
+			throw new Error(`Response status: ${response.status}`);
+		}
+
+		return await response.json();
+	} catch (error) {
+		throw new Error(`Response status: ${error}`);
+	}
+}

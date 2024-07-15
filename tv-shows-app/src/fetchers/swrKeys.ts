@@ -5,6 +5,9 @@ export const swrKeys = {
 	register: `${apiURL}/users`,
 	profile: `${apiURL}/users/me`,
 	showsList: `${apiURL}/shows`,
+	showListItem: (id: string) => `${apiURL}/shows/${id}`,
 	showsTopRatedList: `${apiURL}/shows/top_rated`,
-	reviews: `${apiURL}/reviews`,
+	reviewsList: `${apiURL}/reviews`,
+	showReviewsList: (id: string) => `${apiURL}/shows/${id}/reviews`,
+	showReviewItem: (id: string) => `${apiURL}/reviews/${id}`,
 }

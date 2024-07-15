@@ -13,7 +13,7 @@ const validationInitialState = {
 	ratingIsError: false,
 };
 
-export const ReviewsForm = ({onAdd}: IReviewsFormProps) => {
+export const ReviewsForm = ({ onAdd }: IReviewsFormProps) => {
 	const [validation, setValidation] = useState(validationInitialState);
 	const [ratingValue, setRatingValue] = useState(0);
 

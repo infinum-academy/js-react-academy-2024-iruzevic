@@ -1,18 +1,15 @@
-import { Grid, Heading } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import { useState } from "react";
 import useSWR from "swr";
 import { ShowCard } from "../ShowCard/ShowCard";
 import { fetcherSecure } from "@/fetchers/fetcher";
 import { Loader } from "@/components/shared/Loader/Loader";
+import { IShow } from "@/typings/Show.type";
 
-export const ShowListSection = ({showList}) => {
-	const [shows, setShows] = useState([]);
+export const ShowListSection = ({ showList }) => {
+	const [shows, setShows] = useState([] as IShow[]);
 
-	const {
-		data,
-		error,
-		isLoading
-	} = useSWR(showList, fetcherSecure, {
+	const { isLoading } = useSWR(showList, fetcherSecure, {
 		onSuccess: (data) => {
 			setShows(data.shows);
 		}
@@ -21,7 +18,7 @@ export const ShowListSection = ({showList}) => {
 	return (
 		<>
 			{isLoading && <Loader />}
-			{!isLoading && shows.length && 
+			{!isLoading && shows.length &&
 				<>
 					<Grid
 						templateColumns='repeat(3, 1fr)'

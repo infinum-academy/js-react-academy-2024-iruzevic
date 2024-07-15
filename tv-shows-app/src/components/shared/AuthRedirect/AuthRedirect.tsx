@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import { useSearchParams, usePathname } from "next/navigation";
 import { Loader } from "../Loader/Loader";
 
-export const AuthRedirect = ({children}) => {
+export const AuthRedirect = ({ children }: { children: React.ReactNode }) => {
 	const loggedInPath = '/all-shows';
 	const loggedOutPath = '/login';
 
-	const {data, isLoading} = useUser();
+	const { data, isLoading } = useUser();
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 	const logoutParam = searchParams.get('logout');

@@ -1,7 +1,7 @@
 import { Flex, Grid } from "@chakra-ui/react";
 import { Sidebar } from "../../Sidebar/Sidebar";
 
-export const LayoutWithSidebar = ({children}) => {
+export const LayoutWithSidebar = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<Grid templateColumns="1fr 3fr" gap={4}>
 			<Sidebar />
