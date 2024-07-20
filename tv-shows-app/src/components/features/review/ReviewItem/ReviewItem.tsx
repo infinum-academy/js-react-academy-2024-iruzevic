@@ -1,6 +1,7 @@
 'use client';
 
 import { StarRatingInput } from "@/components/shared/StarRatingInput/StarRatingInput";
+import { getCurrentUserEmail } from "@/fetchers/auth";
 import { IReview } from "@/typings/Reviews.type";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Flex, IconButton, Text } from "@chakra-ui/react";
@@ -11,6 +12,8 @@ interface IReviewItemProps {
 }
 
 export const ReviewItem = ({ review, onReviewDelete }: IReviewItemProps) => {
+	const canDelete = review.user.email === getCurrentUserEmail();
+
 	const onDeleteHandler = () => {
 		onReviewDelete(review);
 	};
@@ -46,12 +49,14 @@ export const ReviewItem = ({ review, onReviewDelete }: IReviewItemProps) => {
 				</Flex>
 			</Flex>
 
-			<IconButton
-				onClick={onDeleteHandler}
-				colorScheme="red"
-				aria-label="Delete review"
-				icon={<DeleteIcon />}
-			/>
+			{canDelete &&
+				<IconButton
+					onClick={onDeleteHandler}
+					colorScheme="red"
+					aria-label="Delete review"
+					icon={<DeleteIcon />}
+				/>
+			}
 		</Flex>
 	);
 }

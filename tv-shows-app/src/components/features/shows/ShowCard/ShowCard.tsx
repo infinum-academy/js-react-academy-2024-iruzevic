@@ -4,21 +4,26 @@ import { StarRatingInput } from "@/components/shared/StarRatingInput/StarRatingI
 import { IShow } from "@/typings/Show.type";
 import { Card, CardBody, Flex, Heading, Image, Text } from "@chakra-ui/react";
 
-interface IShowDetailsProps {
-	show: IShow;
-}
+export const ShowCard = ({ show }: { show: IShow }) => {
+	const link = show.link ? {
+		href: show.link,
+		as: 'a',
+	} : {
+		as: 'div',
+	};
 
-export const ShowDetails = ({ show }: IShowDetailsProps) => {
 	return (
 		<Card
 			mb={4}
 			borderRadius={10}
+			overflow='hidden'
+			{...link}
 		>
 			<Image
-				borderRadius={10}
 				objectFit='cover'
 				src={show.imageUrl}
-				alt='Chakra UI'
+				alt={show.title}
+				maxH="300px"
 			/>
 			<CardBody
 				py={10}
@@ -41,23 +46,23 @@ export const ShowDetails = ({ show }: IShowDetailsProps) => {
 				>
 					{
 						show.averageRating ?
-						<>
-							<StarRatingInput
-								value={show.averageRating}
-							/>
+							<>
+								<StarRatingInput
+									value={show.averageRating}
+								/>
+								<Text
+									fontSize='sm'
+									fontWeight='bold'
+								>
+									{show.averageRating} / 5
+								</Text>
+							</> :
 							<Text
-								fontSize='sm'
 								fontWeight='bold'
+								color={"gray.400"}
 							>
-								{show.averageRating} / 5
+								no ratings
 							</Text>
-						</> :
-						<Text
-							fontWeight='bold'
-							color={"gray.400"}
-						>
-							no ratings
-						</Text>
 					}
 				</Flex>
 			</CardBody>
