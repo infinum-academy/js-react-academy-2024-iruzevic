@@ -15,7 +15,7 @@ export default function AuthLayout({
 				minH="100vh"
 			>
 				<Container
-					bgColor={"purple.600"}
+					bgColor="purple.600"
 					p={4, 8}
 					borderRadius={10}
 				>
