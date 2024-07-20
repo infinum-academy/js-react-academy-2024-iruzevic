@@ -3,8 +3,7 @@
 import { Flex, Text } from "@chakra-ui/react"
 import { ReviewsList } from "../../review/ReviewsList/ReviewsList"
 import { ReviewsForm } from "../ReviewForm/ReviewForm";
-import { IReview, IReviewsList } from "@/typings/Reviews.type";
-import { useEffect, useState } from "react";
+import { IReview } from "@/typings/Reviews.type";
 import { ShowCard } from "../ShowCard/ShowCard";
 import { swrKeys } from "@/fetchers/swrKeys";
 import { fetcherSecure } from "@/fetchers/fetcher";
@@ -12,40 +11,23 @@ import { mutatorDeleteSecure, mutatorSecure } from "@/fetchers/mutator";
 import { Loader } from "@/components/shared/Loader/Loader";
 import useSWRMutation from "swr/mutation";
 import { processRequest } from "@/fetchers/processor";
-import { IShow } from "@/typings/Show.type";
+import useSWR, {useSWRConfig} from "swr";
 
 export const ShowReviewSection = ({ showId }: { showId: string }) => {
-	const [reviewsList, setReviewsList] = useState({ reviews: [] });
-	const [showCard, setShowCard] = useState({} as IShow);
+	const { mutate } = useSWRConfig();
+	const {
+		data: dataShow,
+		isLoading: isLoadingShow,
+	} = useSWR(swrKeys.showListItem(showId), fetcherSecure);
 
 	const {
-		trigger: triggerShow,
-		isMutating: isLoadingShow,
-	} = useSWRMutation(swrKeys.showListItem(showId), fetcherSecure, {
-		onSuccess: (data) => {
-			setShowCard(data.show as IShow);
-		}
-	});
-
-	const {
-		trigger: triggerReviews,
-		isMutating: isLoadingShowReviews,
-	} = useSWRMutation(swrKeys.showReviewsList(showId), fetcherSecure, {
-		onSuccess: (data) => {
-			console.log(data);
-
-			setReviewsList(data as IReviewsList);
-		}
-	});
+		data: dataReviews,
+		isLoading: isLoadingShowReviews,
+	} = useSWR(swrKeys.showReviewsList(showId), fetcherSecure);
 
 	const { trigger: triggerReviewAdd } = useSWRMutation(swrKeys.reviewsList, mutatorSecure);
 
 	useSWRMutation(swrKeys.showReviewItem(showId), mutatorDeleteSecure);
-
-	useEffect(() => {
-		triggerShow();
-		triggerReviews();
-	}, []);
 
 	const onAddShowReview = async (review: IReview) => {
 		const reviewAddResponse = await triggerReviewAdd({
@@ -55,8 +37,8 @@ export const ShowReviewSection = ({ showId }: { showId: string }) => {
 		});
 
 		if (processRequest(reviewAddResponse).status === 'success') {
-			await triggerShow(swrKeys.showListItem(showId));
-			await triggerReviews(swrKeys.showReviewsList(showId));
+			mutate(swrKeys.showReviewsList(showId));
+			mutate(swrKeys.showListItem(showId));
 		}
 	}
 
@@ -64,8 +46,8 @@ export const ShowReviewSection = ({ showId }: { showId: string }) => {
 		const reviewDeleteResponse = await mutatorDeleteSecure(swrKeys.showReviewItem(review.id));
 
 		if (reviewDeleteResponse) {
-			await triggerShow(swrKeys.showListItem(showId));
-			await triggerReviews(swrKeys.showReviewsList(showId));
+			mutate(swrKeys.showReviewsList(showId));
+			mutate(swrKeys.showListItem(showId));
 		}
 	}
 
@@ -81,10 +63,10 @@ export const ShowReviewSection = ({ showId }: { showId: string }) => {
 				pb={4}
 			>
 				<ShowCard show={{
-					title: showCard.title,
-					description: showCard.description,
-					imageUrl: showCard.image_url,
-					averageRating: showCard.average_rating,
+					title: dataShow.show.title,
+					description: dataShow.show.description,
+					imageUrl: dataShow.show.image_url,
+					averageRating: dataShow.show.average_rating,
 				}} />
 
 				<ReviewsForm onAdd={onAddShowReview} />
@@ -92,9 +74,9 @@ export const ShowReviewSection = ({ showId }: { showId: string }) => {
 				{isLoadingShowReviews ?
 					<Loader /> :
 					<>
-						{reviewsList?.reviews?.length ?
+						{dataReviews?.reviews?.length ?
 							<ReviewsList
-								reviewsList={reviewsList}
+								reviewsList={dataReviews?.reviews}
 								onReviewDelete={onReviewDelete}
 							/> :
 							<Text

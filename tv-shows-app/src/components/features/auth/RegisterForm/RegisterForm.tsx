@@ -1,7 +1,7 @@
 'use client'
 
 import { mutatorLogin } from "@/fetchers/mutator";
-import { Alert, AlertIcon, Button, FormControl, FormLabel, Heading, Input, Link, Text, chakra } from "@chakra-ui/react";
+import { Alert, AlertIcon, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Link, Text, chakra } from "@chakra-ui/react";
 import { useState } from "react";
 import NexLink from "next/link";
 import { useForm } from "react-hook-form";
@@ -17,7 +17,7 @@ interface IRegisterFormInputs {
 
 export const RegisterForm = () => {
 	const router = useRouter();
-	const { register, handleSubmit} = useForm<IRegisterFormInputs>();
+	const { register, formState: { errors }, getValues, watch, handleSubmit} = useForm<IRegisterFormInputs>();
 	const [globalError, setGlobalError] = useState([]);
 
 	const { trigger } = useSWRMutation(swrKeys.register, mutatorLogin, {
@@ -69,23 +69,39 @@ export const RegisterForm = () => {
 					status='error'
 				>
 					<AlertIcon />
-					{globalError.map((error, index) => error)}
+					{globalError.map((error) => error)}
 				</Alert>
 			}
 
-			<FormControl isRequired={true}>
+			<FormControl isInvalid={Boolean(errors.email)}>
 				<FormLabel>Email</FormLabel>
-				<Input {...register("email")} required type="email" />
+				<Input type="email"
+					{...register("email", {
+						required: "Email is required.",
+					})}
+				/>
+				<FormErrorMessage>{errors.email?.message}</FormErrorMessage>
 			</FormControl>
 
-			<FormControl isRequired={true}>
+			<FormControl isInvalid={Boolean(errors.password)}>
 				<FormLabel>Password</FormLabel>
-				<Input {...register("password")} required type="password" />
+				<Input type="password"
+					{...register("password", {
+						required: "Password is required.",
+					})} />
+				<FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
 			</FormControl>
 
-			<FormControl isRequired={true}>
-				<FormLabel>Confirm Password</FormLabel>
-				<Input {...register("password_confirmation")} required type="password" />
+			<FormControl isInvalid={Boolean(errors.password_confirmation)}>
+			<FormLabel>Confirm Password</FormLabel>
+				<Input type="password"
+					{...register("password_confirmation", {
+						required: "Password is required.",
+						validate: {
+							matches: (value) => value === getValues('password') || 'Passwords do not match',
+						},
+					})} />
+				<FormErrorMessage>{errors?.password_confirmation?.message}</FormErrorMessage>
 			</FormControl>
 
 			<Button type="submit">

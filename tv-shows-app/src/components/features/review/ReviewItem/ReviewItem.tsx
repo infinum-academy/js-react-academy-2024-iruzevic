@@ -5,7 +5,6 @@ import { getCurrentUserEmail } from "@/fetchers/auth";
 import { IReview } from "@/typings/Reviews.type";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Flex, IconButton, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 
 interface IReviewItemProps {
 	rating: IReview;
@@ -13,13 +12,7 @@ interface IReviewItemProps {
 }
 
 export const ReviewItem = ({ review, onReviewDelete }: IReviewItemProps) => {
-	const [canDelete, setCanDelete] = useState(false);
-
-	useEffect(() => {
-		if (review.user.email === getCurrentUserEmail()) {
-			setCanDelete(true);
-		}
-	}, [review]);
+	const canDelete = review.user.email === getCurrentUserEmail();
 
 	const onDeleteHandler = () => {
 		onReviewDelete(review);

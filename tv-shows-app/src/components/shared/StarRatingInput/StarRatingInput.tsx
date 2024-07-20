@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { StarIcon } from "@chakra-ui/icons";
-import { HStack, Box } from "@chakra-ui/react";
+import { HStack, Box, Input } from "@chakra-ui/react";
+import { set } from "ol/transform";
 
 interface IStarRatingInputProps {
 	value: number;

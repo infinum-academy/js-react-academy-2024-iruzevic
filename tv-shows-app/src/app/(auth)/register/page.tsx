@@ -1,7 +1,12 @@
 'use client'
 
 import { RegisterForm } from "@/components/features/auth/RegisterForm/RegisterForm";
+import { AuthRedirect } from "@/components/shared/AuthRedirect/AuthRedirect";
 
 export default function RegisterPage() {
-	return <RegisterForm />;
+	return (
+		<AuthRedirect>
+			<RegisterForm />
+		</AuthRedirect>
+	);
 }

@@ -1,46 +1,26 @@
+'use client';
+
 import { StarRatingInput } from "@/components/shared/StarRatingInput/StarRatingInput";
 import { getCurrentUserEmail } from "@/fetchers/auth";
 import { IReview } from "@/typings/Reviews.type";
 import { Button, Flex, FormControl, FormErrorMessage, Heading, Input, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 interface IReviewsFormProps {
 	onAdd: (review: IReview) => void;
 }
-
-const validationInitialState = {
-	commentIsError: false,
-	ratingIsError: false,
-};
+interface IReviewFormInputs {
+	comment: string;
+	rating: string;
+}
 
 export const ReviewsForm = ({ onAdd }: IReviewsFormProps) => {
-	const [validation, setValidation] = useState(validationInitialState);
-	const [ratingValue, setRatingValue] = useState(0);
+	const {control, register, formState: { errors }, handleSubmit, getValues, reset} = useForm<IReviewFormInputs>();
 
-	const onSubmitHandler = (e) => {
-		e.preventDefault();
-		const comment = document.getElementById('js-comment') as HTMLInputElement;
-
-		const newValidation = {}
-
-		if (comment.value === '') {
-			newValidation.commentIsError = true;
-		}
-
-		if (!ratingValue) {
-			newValidation.ratingIsError = true;
-		}
-
-		const validationCheck = Object.values(newValidation).some(value => value === true);
-
-		if (validationCheck) {
-			setValidation(newValidation);
-			return;
-		}
-
+	const onReviewAdd = (data: IReviewFormInputs) => {
 		const newReview: IReview = {
-			comment: comment.value,
-			rating: ratingValue,
+			comment: data.comment,
+			rating: data.rating,
 			user: {
 				email: getCurrentUserEmail(),
 			}
@@ -48,9 +28,7 @@ export const ReviewsForm = ({ onAdd }: IReviewsFormProps) => {
 
 		onAdd(newReview);
 
-		comment.value = '';
-		setRatingValue(0);
-		setValidation(validationInitialState);
+		reset();
 	};
 
 	return (
@@ -63,7 +41,7 @@ export const ReviewsForm = ({ onAdd }: IReviewsFormProps) => {
 			bgColor='purple.800'
 			p={5}
 			borderRadius={10}
-			onSubmit={onSubmitHandler}
+			onSubmit={handleSubmit(onReviewAdd)}
 		>
 			<Heading
 				as='h3'
@@ -72,36 +50,50 @@ export const ReviewsForm = ({ onAdd }: IReviewsFormProps) => {
 				Rate your show:
 			</Heading>
 
-			<FormControl isInvalid={validation.commentIsError}>
+			<FormControl isInvalid={Boolean(errors.comment)}>
 				<Input
-					id="js-comment"
+					type="text"
 					placeholder="Add you comment here..."
 					variant='flushed'
-					required
 					color='white'
-					_placeholder={{ color: 'purple.200' }}
 					focusBorderColor='purple.400'
+					_placeholder={{ color: 'purple.200' }}
+					{...register("comment", {
+						required: "Comment is required.",
+					})}
 				/>
-				{validation.commentIsError && <FormErrorMessage>Comment is required.</FormErrorMessage>}
+				<FormErrorMessage>{errors.comment?.message}</FormErrorMessage>
 			</FormControl>
 
-			<FormControl isInvalid={validation.ratingIsError || validation.ratingIsErrorRange}>
+			<FormControl isInvalid={Boolean(errors.rating)}>
 				<Flex
 					gap={2}
 					alignItems='center'
 				>
-					<StarRatingInput
-						value={ratingValue}
-						onChange={setRatingValue}
+					<Controller
+						as="TextField"
+						name="rating"
+						control={control}
+						defaultValue={''}
+						rules={
+							{ required: "Rating is required." }
+						}
+						render={({field}) => (
+							<StarRatingInput
+								{...field}
+								value={field.value}
+								onChange={field.onChange}
+							/>
+						)}
 					/>
 					<Text
 						fontSize='sm'
 						fontWeight='bold'
 					>
-						{ratingValue} / 5
+						{getValues('rating')} / 5
 					</Text>
 				</Flex>
-				{validation.ratingIsError && <FormErrorMessage>Rating is required.</FormErrorMessage>}
+				<FormErrorMessage>{errors.rating?.message}</FormErrorMessage>
 			</FormControl>
 
 			<Button
@@ -113,3 +105,15 @@ export const ReviewsForm = ({ onAdd }: IReviewsFormProps) => {
 		</Flex>
 	);
 }
+
+					// <StarRatingInput
+					// 	as='input'
+					// 	type='number'
+					// 	value={ratingValue}
+					// 	onChange={setRatingValue}
+					// 	inputProps={
+					// 		{...register("rating", {
+					// 			required: "Rating is required.",
+					// 		})}
+					// 	}
+					// />

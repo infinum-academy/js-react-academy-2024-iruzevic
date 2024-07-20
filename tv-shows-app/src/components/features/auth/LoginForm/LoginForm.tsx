@@ -1,7 +1,7 @@
 'use client'
 
 import { mutatorLogin } from "@/fetchers/mutator";
-import { Alert, AlertIcon, Button, FormControl, FormLabel, Heading, Input, Link, Text, chakra } from "@chakra-ui/react";
+import { Alert, AlertIcon, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Link, Text, chakra } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -16,7 +16,7 @@ interface ILoginFormInputs {
 
 export const LoginForm = () => {
 	const router = useRouter();
-	const {register, handleSubmit} = useForm<ILoginFormInputs>();
+	const {register, formState: { errors }, handleSubmit} = useForm<ILoginFormInputs>();
 	const [globalError, setGlobalError] = useState([]);
 
 	const { trigger } = useSWRMutation(swrKeys.login, mutatorLogin, {
@@ -62,18 +62,27 @@ export const LoginForm = () => {
 					status='error'
 				>
 					<AlertIcon />
-					{globalError.map((error, index) => error)}
+					{globalError.map((error) => error)}
 				</Alert>
 			}
 
-			<FormControl isRequired={true}>
+			<FormControl isInvalid={Boolean(errors.email)}>
 				<FormLabel>Email</FormLabel>
-				<Input {...register("email", { required: true } )} type="email" />
+				<Input type="email"
+					{...register("email", {
+						required: "Email is required.",
+					})}
+				/>
+				<FormErrorMessage>{errors.email?.message}</FormErrorMessage>
 			</FormControl>
 
-			<FormControl isRequired={true}>
+			<FormControl isInvalid={Boolean(errors.password)}>
 				<FormLabel>Password</FormLabel>
-				<Input {...register("password")} required type="password" />
+				<Input type="password"
+					{...register("password", {
+						required: "Password is required.",
+					})} />
+				<FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
 			</FormControl>
 
 			<Button type="submit">

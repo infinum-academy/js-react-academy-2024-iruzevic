@@ -15,7 +15,7 @@ export const ReviewsList = ({reviewsList, onReviewDelete}: IReviewsListProps) =>
 			direction="column"
 			gap={3}
 		>
-			{reviewsList.reviews.map((review, i) => (
+			{reviewsList.map((review, i) => (
 				<ReviewItem key={review.id} review={review} onReviewDelete={onReviewDelete} />
 			))}
 		</Flex>
